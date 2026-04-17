@@ -152,6 +152,18 @@ class Client
 
     // ── Internal ─────────────────────────────────────────────────────────
 
+    
+    /**
+     * Throws if no API key is configured, with a developer-friendly signup URL.
+     */
+    private function requireApiKey(string $method): void
+    {
+        if (empty($this->apiKey)) {
+            throw new \RuntimeException(
+                'TrafficOrchestrator Auth Error: Missing API Key. To generate your free API Key in 60 seconds, visit: https://trafficorchestrator.com/dashboard/keys'
+            );
+        }
+    }
     private function request($method, $path, $body = null)
     {
         $url     = $this->baseUrl . $path;

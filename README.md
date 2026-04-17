@@ -1,106 +1,79 @@
-# traffic-orchestrator-php
+# Traffic Orchestrator — PHP SDK
 
-Official PHP SDK for [Traffic Orchestrator](https://trafficorchestrator.com) â€” license validation, management, and analytics.
+[![PHP](https://img.shields.io/badge/PHP-8.1+-777BB4?logo=php)](https://packagist.org/packages/traffic-orchestrator/sdk)
+[![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](LICENSE)
 
-ðŸ“– [API Reference](https://trafficorchestrator.com/docs#api) Â· [SDK Guides](https://trafficorchestrator.com/docs/sdk/php) Â· [OpenAPI Spec](https://api.trafficorchestrator.com/api/v1/openapi.json)
+**Enterprise-grade software licensing, edge validation, and API management.** Protect and monetize your applications with domain-bound license keys, offline verification, and real-time analytics — powered by 300+ edge locations worldwide.
 
-## Install
+---
+
+## Quickstart (3 steps, 60 seconds)
+
+### 1. Create your free account
+
+> **[Sign up at trafficorchestrator.com](https://trafficorchestrator.com/register)** — no credit card required. Free tier includes 5 licenses and 10,000 validations/month.
+
+### 2. Get your API key
+
+> Go to **[Dashboard ? API Keys](https://trafficorchestrator.com/dashboard/keys)** and generate a Sandbox or Live key.
+
+### 3. Install and validate
 
 ```bash
 composer require traffic-orchestrator/sdk
 ```
 
-## Quick Start
-
 ```php
 use TrafficOrchestrator\Client;
 
-$to = new Client();
-$result = $to->validateLicense('LK-xxxx', 'example.com');
-
-if ($result->valid) {
-    echo "Plan: " . $result->planId;
-}
+$client = new Client('sk_live_your_key_here');
+$result = $client->validateLicense('LK-xxxx-xxxx-xxxx', 'yourdomain.com');
+echo $result['valid'] ? 'License active' : 'License invalid';
 ```
 
-## Authenticated Usage
+**That's it.** Your application is now license-protected.
 
-```php
-$to = new Client(['apiKey' => getenv('TO_API_KEY')]);
-$licenses = $to->listLicenses();
-```
+---
 
-## API Methods
+## Why Traffic Orchestrator?
 
-### Core License Operations
+| Feature | Description |
+|---------|-------------|
+| **Domain-Bound Licensing** | SHA-256 validated keys tied to specific domains — no key sharing |
+| **Edge Validation** | Sub-10ms license checks from 300+ global edge locations |
+| **Offline Mode** | Ed25519 signed JWT tokens for air-gapped and offline environments |
+| **Grace Period** | Configurable fallback keeps your app running during API outages |
+| **Real-Time Analytics** | Track activations, usage patterns, and revenue in your dashboard |
+| **Multi-Language** | Official SDKs for 12 languages — same API, consistent behavior |
 
-| Method | Auth | Description |
-| --- | --- | --- |
-| `validateLicense($token, $domain)` | No | Validate a license key |
-| `verifyOffline($token, $publicKey, $domain)` | No | Ed25519 offline verification |
-| `listLicenses()` | Yes | List all licenses |
-| `createLicense($options)` | Yes | Create a new license |
-| `rotateLicense($licenseId)` | Yes | Rotate license key |
-| `deleteLicense($licenseId)` | Yes | Revoke a license |
-| `getUsage()` | Yes | Get usage statistics |
-| `getAnalytics($days)` | Yes | Get detailed analytics |
-| `healthCheck()` | No | Check API health |
+## Features
 
-### Portal & Enterprise Methods
+- **License Validation** — Validate license keys against domains with cryptographic proof
+- **License Management** — Create, update, suspend, revoke, and rotate license keys
+- **Offline Verification** — Verify Ed25519-signed JWT tokens without an API call
+- **Webhooks** — Real-time notifications for license events (activation, expiry, revocation)
+- **Analytics & SLA Monitoring** — Track validation performance and uptime metrics
 
-| Method | Auth | Description |
-| --- | --- | --- |
-| `addDomain($licenseId, $domain)` | Yes | Add domain to license |
-| `removeDomain($licenseId, $domain)` | Yes | Remove domain from license |
-| `getDomains($licenseId)` | Yes | Get license domains |
-| `updateLicenseStatus($id, $status)` | Yes | Suspend/reactivate license |
-| `listApiKeys()` | Yes | List API keys |
-| `createApiKey($name, $scopes)` | Yes | Create API key |
-| `deleteApiKey($keyId)` | Yes | Delete API key |
-| `getDashboard()` | Yes | Full dashboard overview |
+## Documentation
 
-## Retry (Guzzle Middleware)
+- ?? **[Full API Reference](https://trafficorchestrator.com/docs/api)**
+- ?? **[Quickstart Guides](https://trafficorchestrator.com/docs/quickstart)**
+- ?? **[Integration Examples](https://trafficorchestrator.com/docs/examples)**
 
-```php
-$to = new Client([
-    'apiKey' => getenv('TO_API_KEY'),
-    'timeout' => 5,
-    'retries' => 3,  // Retry on 5xx with backoff
-]);
-```
+## Support
 
-## Multi-Environment
-
-```php
-// Production (default)
-$to = new Client(['apiKey' => getenv('TO_API_KEY')]);
-
-// Staging
-$to = new Client([
-    'apiKey' => getenv('TO_API_KEY_DEV'),
-    'apiUrl' => 'https://api-staging.trafficorchestrator.com/api/v1',
-]);
-```
-
-## Offline Verification (Enterprise)
-
-Validate licenses locally without API calls using Ed25519 JWT signatures:
-
-```php
-$to = new Client([
-    'publicKey' => getenv('TO_PUBLIC_KEY'),
-]);
-$result = $to->verifyOffline($licenseToken);
-if ($result->valid) {
-    echo "Plan: " . $result->planId;
-}
-```
-
-## Requirements
-
-- PHP 8.0+
-- Guzzle 7.x
+- ?? [Report an Issue](https://github.com/TrafficOrchestrator/php-sdk/issues)
+- ?? [Email Support](mailto:support@trafficorchestrator.com)
+- ?? [Knowledge Base](https://trafficorchestrator.com/docs)
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE) for details.
+
+---
+
+<p align="center">
+  <a href="https://trafficorchestrator.com"><strong>trafficorchestrator.com</strong></a> · 
+  <a href="https://trafficorchestrator.com/register">Get Started Free</a> · 
+  <a href="https://trafficorchestrator.com/docs">Docs</a>
+</p>
